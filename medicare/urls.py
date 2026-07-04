@@ -1,7 +1,8 @@
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
+from pharmacy.views import home
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('pharmacy.urls')),
+    path('', home),  # This shows "Medicare is Live!" at your root URL
 ]
