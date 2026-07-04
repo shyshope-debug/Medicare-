@@ -6,7 +6,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-keep-your-original-key-here'
 
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ['medicare-lnan.onrender.com', 'localhost', '127.0.0.1']
 
 INSTALLED_APPS = [
