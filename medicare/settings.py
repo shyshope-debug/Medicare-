@@ -1,3 +1,5 @@
+import os
+import dj_database_url
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -5,7 +7,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-change-this-later-12345'
 
 # Turn this False once everything works
-import os
 DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
 ALLOWED_HOSTS = ['medicare-lnan.onrender.com', 'localhost', '127.0.0.1']
