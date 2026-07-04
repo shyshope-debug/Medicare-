@@ -5,7 +5,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-change-this-later-12345'
 
 # Turn this False once everything works
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['medicare-lnan.onrender.com', '.onrender.com', 'localhost', '127.0.0.1']
 
