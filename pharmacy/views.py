@@ -1,7 +1,6 @@
-from django.http import HttpResponse
+from django.shortcuts import render
+from .models import Medicine
 
 def home(request):
-    if request.user.is_authenticated:
-        return HttpResponse(f"Welcome to Medicare, {request.user.username}! <a href='/accounts/logout/'>Logout</a>")
-    else:
-        return HttpResponse("Medicare is Live! <a href='/accounts/login/'>Login</a>")
+    medicines = Medicine.objects.filter(stock_quantity__gt=0).order_by('name')
+    return render(request, 'home.html', {'medicines': medicines})
