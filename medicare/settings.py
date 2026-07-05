@@ -56,3 +56,9 @@ TEMPLATES = [
 ]
 ROOT_URLCONF = 'medicare.urls'
 WSGI_APPLICATION = 'medicare.wsgi.application'
+DATABASES = {
+    'default': dj_database_url.config(
+        default=f'sqlite:///{BASE_DIR / "db.sqlite3"}',
+        conn_max_age=600
+    )
+}
