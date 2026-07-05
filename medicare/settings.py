@@ -31,7 +31,7 @@ INSTALLED_APPS = [
     'pharmacy',  # your app
 ]
 
-    MIDDLEWARE = [
+MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',  # add this for static files
     'django.contrib.sessions.middleware.SessionMiddleware',
