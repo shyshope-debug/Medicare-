@@ -1,9 +1,10 @@
-from django.contrib import admin
-from django.urls import path, include
-from pharmacy.views import home
+from django.urls import path
+from django.http import HttpResponse
+
+def home(request):
+    return HttpResponse("Medicare is online. /admin to login")
 
 urlpatterns = [
+    path('', home),  # This fixes the shutdown issue
     path('admin/', admin.site.urls),
-    path('accounts/', include('django.contrib.auth.urls')),  # adds login/logout/password reset
-    path('', home, name='home'),
 ]
