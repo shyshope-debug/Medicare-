@@ -3,6 +3,16 @@ import dj_database_url
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+import os
+
+# For Render
+ALLOWED_HOSTS = ['lnan.onrender.com', 'medicare-lnan.onrender.com']
+CSRF_TRUSTED_ORIGINS = ['https://lnan.onrender.com', 'https://medicare-lnan.onrender.com']
+
+# Static files for admin CSS
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 SECRET_KEY = 'django-insecure-change-this-later-12345'
 
@@ -21,7 +31,7 @@ INSTALLED_APPS = [
     'pharmacy',  # your app
 ]
 
-MIDDLEWARE = [
+    MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',  # add this for static files
     'django.contrib.sessions.middleware.SessionMiddleware',
