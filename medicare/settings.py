@@ -62,3 +62,4 @@ DATABASES = {
         conn_max_age=600
     )
 }
+AUTH_USER_MODEL = 'pharmacy.User'
