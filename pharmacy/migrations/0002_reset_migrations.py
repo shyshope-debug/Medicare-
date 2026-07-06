@@ -2,12 +2,10 @@ from django.db import migrations
 
 def delete_all_migrations(apps, schema_editor):
     with schema_editor.connection.cursor() as cursor:
-        cursor.execute("DELETE FROM django_migrations;")
+        cursor.execute("TRUNCATE TABLE django_migrations CASCADE;")
 
 class Migration(migrations.Migration):
-    dependencies = [
-        ('pharmacy', '0001_initial'),
-    ]
+    dependencies = []  # No dependencies = runs first
     operations = [
         migrations.RunPython(delete_all_migrations),
     ]
