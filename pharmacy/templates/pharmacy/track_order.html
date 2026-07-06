@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Track Your Order - Medicare</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; }
+        input, button { width: 100%; padding: 12px; margin: 8px 0; font-size: 16px; }
+        button { background: #28a745; color: white; border: none; cursor: pointer; }
+        .error { color: red; margin: 10px 0; }
+        .order-box { background: #f8f9fa; padding: 20px; border-radius: 5px; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h2>Track Your Order</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <input type="text" name="order_id" placeholder="Order ID" required>
+        <input type="text" name="phone" placeholder="Phone Number" required>
+        <button type="submit">Track Order</button>
+    </form>
+
+    {% if error %}
+        <div class="error">{{ error }}</div>
+    {% endif %}
+
+    {% if order %}
+        <div class="order-box">
+            <h3>Order #{{ order.id }}</h3>
+            <p><strong>Status:</strong> {{ order.status }}</p>
+            <p><strong>Total:</strong> UGX {{ order.total_price }}</p>
+            <p><strong>Customer:</strong> {{ order.customer_name }}</p>
+            <p><strong>Date:</strong> {{ order.created_at }}</p>
+        </div>
+    {% endif %}
+</body>
+</html>
