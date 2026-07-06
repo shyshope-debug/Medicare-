@@ -2,41 +2,67 @@
 <html>
 <head>
     <title>Medicare Pharmacy</title>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-        body { font-family: Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; background: #f5f5f5; }
-        h1 { color: #2c5aa0; text-align: center; }
-        .medicine { background: white; border: 1px solid #ddd; padding: 20px; margin: 15px 0; border-radius: 8px; }
-        .medicine h3 { margin: 0 0 10px 0; color: #333; }
-        .price { color: #28a745; font-weight: bold; font-size: 18px; }
-        .stock { color: #666; margin: 5px 0; }
-        .expiry { color: #dc3545; font-size: 14px; }
-        .empty { text-align: center; padding: 40px; color: #666; }
-        .admin-link { text-align: center; margin-top: 30px; }
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f9f9f9; }
+        h1 { color: #2c5aa0; }
+        .medicine { 
+            border: 1px solid #ddd; 
+            padding: 15px; 
+            margin: 10px 0; 
+            border-radius: 8px; 
+            background: white;
+        }
+        .whatsapp-btn { 
+            background: #25D366; 
+            color: white; 
+            padding: 12px 24px; 
+            text-decoration: none; 
+            border-radius: 6px; 
+            display: inline-block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        .out-of-stock { color: red; font-weight: bold; }
+        .price { font-size: 18px; color: #2c5aa0; }
     </style>
 </head>
 <body>
     <h1>Medicare Pharmacy</h1>
+    <p>Order medicines for delivery around Kampala</p>
     <h2>Available Medicines</h2>
     
-    {% for medicine in medicines %}
-    <div class="medicine">
-        <h3>{{ medicine.name }}</h3>
-        {% if medicine.description %}
-        <p>{{ medicine.description }}</p>
-        {% endif %}
-        <p class="price">UGX {{ medicine.price }}</p>
-        <p class="stock">In Stock: {{ medicine.stock_quantity }}</p>
-        <p class="expiry">Expires: {{ medicine.expiry_date }}</p>
-    </div>
-    {% empty %}
-    <div class="empty">
+    {% if medicines %}
+        {% for medicine in medicines %}
+            <div class="medicine">
+                <h3>{{ medicine.name }}</h3>
+                <p>{{ medicine.description }}</p>
+                <p class="price"><strong>UGX {{ medicine.price }}</strong></p>
+                
+                {% if medicine.stock_quantity > 0 %}
+                    <p>In Stock: {{ medicine.stock_quantity }}</p>
+                    <a class="whatsapp-btn" 
+                       href="https://wa.me/256748348701?text=Hi%20Medicare%20Pharmacy,%20I%20want%20to%20order:%20{{ medicine.name }}%20-%20UGX%20{{ medicine.price }}.%20Qty:%201" 
+                       target="_blank">
+                       Order on WhatsApp
+                    </a>
+                {% else %}
+                    <p class="out-of-stock">Out of Stock</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
         <p>No medicines available right now.</p>
-    </div>
-    {% endfor %}
+        <a class="whatsapp-btn" 
+           href="https://wa.me/256748348701?text=Hi%20Medicare%20Pharmacy,%20do%20you%20have%20stock?" 
+           target="_blank">
+           Check Availability on WhatsApp
+        </a>
+    {% endif %}
     
-    <div class="admin-link">
-        <a href="/admin">Admin Login</a>
-    </div>
+    <br><br>
+    <hr>
+    <a href="/admin">Pharmacy Admin Login</a>
 </body>
-      </html>
+    </html>
