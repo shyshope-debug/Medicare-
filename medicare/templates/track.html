@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Track Order - Medicare Pharmacy</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body { font-family: Arial; padding: 20px; max-width: 400px; margin: auto; }
+        input, button { width: 100%; padding: 12px; margin: 8px 0; font-size: 16px; }
+        button { background: #28a745; color: white; border: none; border-radius: 4px; }
+        .status { margin-top: 20px; padding: 15px; background: #f0f0f0; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <h2>Track Your Medicine Order</h2>
+    <form method="post">
+        {% csrf_token %}
+        <input name="phone" type="tel" placeholder="075XXXXXXX" value="{{ phone }}" required>
+        <button type="submit">Check Status</button>
+    </form>
+    
+    {% if status %}
+    <div class="status">
+        <strong>Status:</strong> {{ status }}
+    </div>
+    {% endif %}
+</body>
+</html>
