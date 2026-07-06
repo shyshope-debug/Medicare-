@@ -2,5 +2,5 @@ from django.shortcuts import render
 from .models import Medicine
 
 def home(request):
-    medicines = Medicine.objects.filter(available=True)
+    medicines = Medicine.objects.all()  # Changed this line
     return render(request, 'pharmacy/home.html', {'medicines': medicines})
