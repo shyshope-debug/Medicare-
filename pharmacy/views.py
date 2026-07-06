@@ -18,21 +18,27 @@ def home(request):
             [settings.ADMIN_EMAIL],
             fail_silently=False,
         )
+        
+        return redirect('home')
     
-    return redirect('home')
+    return render(request, 'home.html')
 
 # ADD THIS AT THE BOTTOM - WhatsApp Webhook
 VERIFY_TOKEN = "medicare_bot_verify_2026"
 
 @csrf_exempt
 def whatsapp_webhook(request):
-    if request.method == 'GET':
-        token = request.GET.get('hub.verify_token')
-        challenge = request.GET.get('hub.challenge')
-        if token == VERIFY_TOKEN:
+    if request.method == "GET":
+        mode = request.GET.get("hub.mode")
+        token = request.GET.get("hub.verify_token")
+        challenge = request.GET.get("hub.challenge")
+        
+        if mode == "subscribe" and token == VERIFY_TOKEN:
             return HttpResponse(challenge, status=200)
-        return HttpResponse('Forbidden', status=403)
+        return HttpResponse("Forbidden", status=403)
     
-    if request.method == 'POST':
-        print("WhatsApp message received:", request.body)
-        return HttpResponse('OK', status=200)
+    if request.method == "POST":
+        print("WhatsApp message:", request.body)
+        return HttpResponse("EVENT_RECEIVED", status=200)
+    
+    return HttpResponse("OK", status=200)
