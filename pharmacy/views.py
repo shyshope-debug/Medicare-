@@ -1,40 +1,38 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, redirect
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import send_mail
 from django.conf import settings
-from .models import Medicine
 
+# Your existing views go here
 def home(request):
-    medicines = Medicine.objects.all()
-    return render(request, 'pharmacy/home.html', {'medicines': medicines})
-
-def order_medicine(request, medicine_id):
-    medicine = get_object_or_404(Medicine, id=medicine_id)
-    
-    # Example: reduce stock by 1 when ordered
-    if medicine.quantity > 0:
-        medicine.quantity -= 1
-        medicine.save()
+    # example of your existing code from screenshot
+    if request.method == 'POST':
+        subject = request.POST.get('subject')
+        message = request.POST.get('message')
         
-        # LOW STOCK ALERT - triggers when below 10
-        if medicine.quantity < 10:
-            subject = f'LOW STOCK ALERT: {medicine.name}'
-            message = f'''
-Medicare System Alert
-
-Medicine: {medicine.name}
-Remaining Stock: {medicine.quantity}
-Threshold: 10
-
-Action Required: Restock immediately to avoid stockout.
-
-Sent automatically from Termux Django.
-'''
-            send_mail(
-                subject,
-                message,
-                settings.DEFAULT_FROM_EMAIL,
-                [settings.ADMIN_EMAIL],
-                fail_silently=False,
-            )
+        send_mail(
+            subject,
+            message,
+            settings.DEFAULT_FROM_EMAIL,
+            [settings.ADMIN_EMAIL],
+            fail_silently=False,
+        )
     
     return redirect('home')
+
+# ADD THIS AT THE BOTTOM - WhatsApp Webhook
+VERIFY_TOKEN = "medicare_bot_verify_2026"
+
+@csrf_exempt
+def whatsapp_webhook(request):
+    if request.method == 'GET':
+        token = request.GET.get('hub.verify_token')
+        challenge = request.GET.get('hub.challenge')
+        if token == VERIFY_TOKEN:
+            return HttpResponse(challenge, status=200)
+        return HttpResponse('Forbidden', status=403)
+    
+    if request.method == 'POST':
+        print("WhatsApp message received:", request.body)
+        return HttpResponse('OK', status=200)
