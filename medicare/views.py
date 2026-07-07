@@ -1,17 +1,24 @@
-from django.shortcuts import render
-from pharmacy.models import Order
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
 
-def home(request):
-    return render(request, 'pharmacy/home.html')
+VERIFY_TOKEN = "medicare123" # MUST match Meta
 
-def track_order(request):
-    context = {}
-    if request.method == 'POST':
-        order_id = request.POST.get('order_id')
-        phone = request.POST.get('phone')
-        try:
-            order = Order.objects.get(id=order_id, customer_phone=phone)
-            context['order'] = order
-        except Order.DoesNotExist:
-            context['error'] = 'Order not found. Check your Order ID and phone number.'
-    return render(request, 'pharmacy/track_order.html', context)
+@csrf_exempt
+def webhook(request):
+    if request.method == 'GET':
+        # Meta verification
+        mode = request.GET.get('hub.mode')
+        token = request.GET.get('hub.verify_token')
+        challenge = request.GET.get('hub.challenge')
+        
+        if mode == 'subscribe' and token == VERIFY_TOKEN:
+            return HttpResponse(challenge, status=200)
+        else:
+            return HttpResponse('Forbidden', status=403)
+    
+    elif request.method == 'POST':
+        # Handle incoming messages
+        data = json.loads(request.body)
+        print("[Webhook] Received:", data)
+        return HttpResponse('ok', status=200)
